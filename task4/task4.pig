@@ -1,8 +1,8 @@
 REGISTER 'hdfs:///tmp/PigUDF-0.0.1-SNAPSHOT.jar';
 DEFINE checkQuality edu.rosehulman.zhaiz.IsGoodQuality();
 DEFINE TRIMFUNC edu.rosehulman.zhaiz.Trim();
-records = LOAD '$input' using PigStorage('\t') AS (date:chararray, time:chararray, x-edge-location:chararray, sc-bytes:int, c-ip:chararray, cs-method:chararray, cs-Host:chararray, cs-uri-stem:chararray, sc-status:int, cs-Referer:chararray, cs-User-Agent:chararray, cs-uri-query:chararray, cs-Cookie:chararray, x-edge-result-type:chararray, x-edge-request-id:chararray);
-frecords = FILTER records by checkQuality(cs-uri-stem);
-srecords = select cs-uri-stem, x-edge-result-type from frecords;
-grecords = GROUP srecords by cs-uri-stem;
+records = LOAD '$input' using PigStorage('\t') AS (date:chararray, time:chararray, x_edge_location:chararray, sc_bytes:int, c_ip:chararray, cs_method:chararray, cs_Host:chararray, cs_uri_stem:chararray, sc_status:int, cs_Referer:chararray, cs_User_Agent:chararray, cs_uri_query:chararray, cs_Cookie:chararray, x_edge_result_type:chararray, x_edge_request_id:chararray);
+frecords = FILTER records by checkQuality(cs_uri_stem);
+srecords = select cs_uri_stem, x_edge_result_type from frecords;
+grecords = GROUP srecords by cs_uri_stem;
 STORE grecords into '$output' using PigStorage(',');
