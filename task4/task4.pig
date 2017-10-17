@@ -13,5 +13,5 @@ TotalWithHits = JOIN totalRecords by name LEFT OUTER, hitRecords by name;
 errors = FILTER srecords by x_edge_result_type=='Error';
 gerrors = GROUP errors by name;
 errorRecords = foreach gerrors generate group as name, errors as content, COUNT(errors) as errors;
-temp = JOIN TotalWithHits by name LEFT OUTER, errorRecords by name;
+temp = JOIN TotalWithHits by name LEFT OUTER, errorRecords by totalRecords.name;
 STORE temp into '$output' using PigStorage(',');
