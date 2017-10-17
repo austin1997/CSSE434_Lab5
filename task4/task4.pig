@@ -11,7 +11,7 @@ ghits = GROUP hits by name;
 hitRecords = foreach ghits generate group as name, hits as content, COUNT(hits) as hits;
 TotalWithHits = JOIN totalRecords by name LEFT OUTER, hitRecords by name;
 errors = FILTER srecords by x_edge_result_type=='Error';
-gerrors = GROUP hits by name;
+gerrors = GROUP errors by name;
 errorRecords = foreach gerrors generate group as name, errors as content, COUNT(errors) as errors;
 temp = JOIN TotalWithHits by name LEFT OUTER, errorRecords by name;
 STORE temp into '$output' using PigStorage(',');
