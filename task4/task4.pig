@@ -17,5 +17,5 @@ gerrors = GROUP errors by name;
 errorRecords = foreach gerrors generate group as name, errors as content, COUNT(errors) as errors;
 temp = JOIN TotalWithHits by name LEFT OUTER, errorRecords by name;
 HitsErrotsTotal = foreach temp generate TotalWithHits::name as name, TotalWithHits::hits as hits, errorRecords::errors as errors, TotalWithHits::total as total;
-ratios = foreach HitsErrotsTotal generate name, RATIO(hits, total) as hitRate, RATIO(errors, total) as errorRate; 
+ratios = foreach HitsErrotsTotal generate name, hits, errors, total, RATIO(hits, total) as hitRate, RATIO(errors, total) as errorRate; 
 STORE ratios into '$output' using PigStorage(',');
