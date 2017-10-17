@@ -9,9 +9,10 @@ totalRecords = foreach grecords generate group as name, srecords as content, COU
 hits = FILTER srecords by x_edge_result_type=='Hit';
 ghits = GROUP hits by name;
 hitRecords = foreach ghits generate group as name, hits as content, COUNT(hits) as hits;
-TotalWithHits = JOIN totalRecords by name LEFT OUTER, hitRecords by name;
+TotalWithHitsRecords = JOIN totalRecords by name LEFT OUTER, hitRecords by name;
+TotalWithHits = foreach TotalWithHitsRecords generate totalRecords::name as name, hitRecords::hits as hits, totalRecords::total as total;
 errors = FILTER srecords by x_edge_result_type=='Error';
 gerrors = GROUP errors by name;
 errorRecords = foreach gerrors generate group as name, errors as content, COUNT(errors) as errors;
-temp = JOIN TotalWithHits by totalRecords.name LEFT OUTER, errorRecords by name;
+temp = JOIN TotalWithHits by name LEFT OUTER, errorRecords by name;
 STORE temp into '$output' using PigStorage(',');
