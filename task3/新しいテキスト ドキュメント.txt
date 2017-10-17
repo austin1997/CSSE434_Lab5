@@ -1,0 +1,2 @@
+hadoop fs -put *.jar /tmp/
+pig -param input=/tmp/input/tempInput.txt -param output=/tmp/output task3.pig 
