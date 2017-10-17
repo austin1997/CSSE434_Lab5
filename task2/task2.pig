@@ -1,4 +1,4 @@
-REGISTER 'PigUDF-0.0.1-SNAPSHOT.jar';
+REGISTER 'hdfs:///tmp/PigUDF-0.0.1-SNAPSHOT.jar';
 DEFINE TRIMFUNC edu.rosehulman.zhaiz.Trim();
 input1 = LOAD '$input' As (word:chararray);
 a = foreach input1 generate TOKENIZE(word);
