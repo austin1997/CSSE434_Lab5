@@ -1,3 +1,4 @@
+%declare DATETIME `date +%Y-%m-%d`
 REGISTER 'hdfs:///tmp/PigUDF-0.0.1-SNAPSHOT.jar';
 DEFINE checkQuality edu.rosehulman.zhaiz.IsGoodQuality();
 DEFINE TRIMFUNC edu.rosehulman.zhaiz.Trim();
@@ -19,4 +20,4 @@ temp = JOIN TotalWithHits by name LEFT OUTER, errorRecords by name;
 HitsErrotsTotal = foreach temp generate TotalWithHits::name as name, TotalWithHits::hits as hits, errorRecords::errors as errors, TotalWithHits::total as total;
 ratios = foreach HitsErrotsTotal generate name, RATIO(hits, total) as hitRate, RATIO(errors, total) as errorRate, CurrentTime() as time;
 out = foreach ratios generate name, hitRate, errorRate, GetYear(time) as year, GetMonth(time) as month, GetDay(time) as day, GetHour(time) as hour;
-STORE out into '$output' using PigStorage(',');
+STORE out into '$output+//DATETIME' using PigStorage(',');
