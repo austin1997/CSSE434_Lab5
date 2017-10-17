@@ -18,5 +18,5 @@ errorRecords = foreach gerrors generate group as name, errors as content, COUNT(
 temp = JOIN TotalWithHits by name LEFT OUTER, errorRecords by name;
 HitsErrotsTotal = foreach temp generate TotalWithHits::name as name, TotalWithHits::hits as hits, errorRecords::errors as errors, TotalWithHits::total as total;
 ratios = foreach HitsErrotsTotal generate name, RATIO(hits, total) as hitRate, RATIO(errors, total) as errorRate, CurrentTime() as time;
-output = foreach ratios generate name, hitRate, errorRate, GetYear(time) as year, GetMonth(time) as month, GetDay(time) as day, GetHour(time) as hour;
-STORE output into '$output' using PigStorage(',');
+out = foreach ratios generate name, hitRate, errorRate, GetYear(time) as year, GetMonth(time) as month, GetDay(time) as day, GetHour(time) as hour;
+STORE out into '$output' using PigStorage(',');
