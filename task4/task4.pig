@@ -5,4 +5,5 @@ records = LOAD '$input' using PigStorage('\t') AS (date:chararray, time:chararra
 frecords = FILTER records by checkQuality(cs_uri_stem);
 srecords = foreach frecords generate cs_uri_stem, x_edge_result_type;
 grecords = GROUP srecords by cs_uri_stem;
-STORE grecords into '$output' using PigStorage(',');
+temp = foreach grecords generate group, srecords, COUNT(srecords);
+STORE temp into '$output' using PigStorage(',');
